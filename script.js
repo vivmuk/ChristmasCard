@@ -103,7 +103,7 @@ async function generateGreeting(apiKey) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'venice-uncensored',
+            model: 'grok-41-fast',
             messages: [
                 { role: 'system', content: 'You are a 1950s advertising copywriter. Write a SINGLE, SHORT, PUNCHY Holiday greeting (max 10 words) full of Atomic Age enthusiasm and retro slang. Do not use quotes.' },
                 { role: 'user', content: 'Write a holiday greeting.' }
@@ -120,29 +120,20 @@ async function generateStylizedImage(apiKey, base64Image) {
     // Note: Venice API Image-to-Image endpoint logic
     // Some endpoints expect the file as multipart/form-data
 
-    // Convert base64 to blob
-    const res = await fetch(base64Image);
-    const blob = await res.blob();
-
-    const formData = new FormData();
-    formData.append('image', blob);
-    formData.append('prompt', 'A 1950s retro-futuristic watercolor holiday card featuring the person in the uploaded image. Seamlessly integrate their face and likeness into the scene as the main character. Atomic age Christmas style, pastel colors, vintage sci-fi aesthetic, festive atmosphere, highly detailed, smooth painting style.');
-    formData.append('model', 'fluently-xl'); // Using a high quality model
-    formData.append('strength', '0.65'); // Strength of the prompt vs original image (0-1). Adjust if available/needed.
-
-    // NOTE: The exact endpoint for img2img in Venice might vary.
-    // Based on research: /image/edit is for edits/inpainting.
-    // However, if standard img2img strictly isn't documented as a simple POST with 'image',
-    // we might need to rely on /image/generations with an image param if supported, or /image/edit.
-    // We will try /image/edit as found in research.
+    // Strip the data:image/xyz;base64, part if present
+    const base64Data = base64Image.split(',')[1] || base64Image;
 
     const response = await fetch('https://api.venice.ai/api/v1/image/edit', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${apiKey}`
-            // Content-Type is set automatically by fetch for FormData
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify({
+            image: base64Data,
+            prompt: 'A 1950s retro-futuristic watercolor holiday card featuring the person in the uploaded image. Seamlessly integrate their face and likeness into the scene as the main character. Atomic age Christmas style, pastel colors, vintage sci-fi aesthetic, festive atmosphere, highly detailed, smooth painting style.',
+            // model and strength caused 400 errors, removing them as they might not be supported on this endpoint or need different keys
+        })
     });
 
     if (!response.ok) {
@@ -150,14 +141,21 @@ async function generateStylizedImage(apiKey, base64Image) {
         throw new Error(`Image API Error: ${response.status} - ${err}`);
     }
 
+    // Check if response is binary image (as implied by some external usage examples)
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('image')) {
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    }
+
     // The response format for Venice usually returns a URL or Base64
-    // Research said it returns data array with url or b64_json
     const data = await response.json();
 
     // Handle both potential response formats (standard OpenAI style)
     if (data.data && data.data[0].url) return data.data[0].url;
     if (data.data && data.data[0].b64_json) return `data:image/png;base64,${data.data[0].b64_json}`;
     if (data.url) return data.url; // Fallback
+    if (data.image) return `data:image/png;base64,${data.image}`; // Another potential simple format
 
     // If we're here, we might have got something else
     console.log("Unexpected Image Response:", data);
@@ -184,6 +182,10 @@ function drawCanvas() {
     // Text Wrapping or simple center
     // Let's put it at the top
     ctx.fillText(greetingText, CANVAS_WIDTH / 2, 150);
+
+    // Signature
+    ctx.font = 'italic 40px "Playfair Display", serif';
+    ctx.fillText("From Geetika and Vivek", CANVAS_WIDTH / 2, 220);
     ctx.shadowBlur = 0; // Reset
 
     // 3. Draw Original Image (Small, Bottom Right)
