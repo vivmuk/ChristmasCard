@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Holiday Greeting</title>
+  <title>Festive Card Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -14,9 +14,27 @@
 
 <body>
 
+  <div class="generator-controls">
+    <h2 class="festive-title">Card Generator</h2>
+    <div class="controls-grid">
+      <div class="input-group">
+        <label>1. Venice API Key</label>
+        <input type="password" id="apiKeyInput" placeholder="sk-..." />
+      </div>
+      <div class="input-group">
+        <label>2. Upload Photo</label>
+        <input type="file" id="imageInput" accept="image/*" />
+      </div>
+      <div class="status-area">
+        <span id="statusBadge" class="status-badge">Ready</span>
+        <button class="generate-btn" onclick="createCard()">Create Magic</button>
+      </div>
+    </div>
+  </div>
+
   <div class="card-container" id="cardToCapture">
     <div class="card-content">
-      <h1 class="greeting-text">
+      <h1 class="greeting-text" id="canvasGreeting">
         <span class="text-green">At</span><span class="text-red">omic</span>
         <span class="text-green">Xmas</span>,
         <span class="text-red">Daddy-O!</span>
@@ -27,18 +45,22 @@
       </h1>
 
       <div class="image-wrapper">
-        <img src="assets/festive-card.png" alt="Holiday Portrait" class="main-image">
+        <canvas id="cardCanvas"></canvas>
+        <div id="placeholderText" class="placeholder-text">
+          <img src="assets/festive-card.png" alt="Preview" class="preview-img">
+          <p>Generated image will appear here</p>
+        </div>
       </div>
 
       <p class="signature-text">From Geetika and Vivek</p>
     </div>
 
-    <div class="original-photo">
-      <img src="assets/final_family_photo.png" alt="Family Photo">
+    <div class="original-photo" id="originalPhotoThumb">
+      <img src="assets/final_family_photo.png" id="thumbImg" alt="Family Photo">
     </div>
   </div>
 
-  <button id="downloadBtn" class="download-btn">Download Card</button>
+  <button id="downloadBtn" class="download-btn">Download Full Card</button>
 
   <script src="script.js"></script>
 </body>

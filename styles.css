@@ -3,30 +3,109 @@
   /* SeaGreen */
   --text-red: #D32F2F;
   /* Red */
-  --bg-white: #FFFFFF;
+  --bg-warm: #fdfbf7;
+  --card-bg: #fffaf0;
 }
 
 body {
   margin: 0;
-  padding: 20px;
+  padding: 40px 20px;
   font-family: 'Montserrat', sans-serif;
-  background-color: #fdfbf7;
-  /* Warm cream background */
+  background-color: var(--bg-warm);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100vh;
   box-sizing: border-box;
-  /* Subtle festive pattern */
   background-image: radial-gradient(#e0e0e0 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
+/* Generator Controls Styling */
+.generator-controls {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  width: 960px;
+  box-sizing: border-box;
+  border-top: 6px solid var(--text-red);
+}
+
+.festive-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.2rem;
+  color: var(--text-green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.controls-grid {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.input-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #666;
+}
+
+.input-group input {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: var(--text-green);
+}
+
+.status-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-align: right;
+  color: #999;
+}
+
+.generate-btn {
+  padding: 0.8rem 2rem;
+  background: var(--text-red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.generate-btn:hover {
+  background: #b71c1c;
+  transform: translateY(-1px);
+}
+
+/* Card Styling */
 .card-container {
-  background-color: #fffaf0;
-  /* Snow/Floral white */
-  /* Enforce 16:9 Aspect Ratio */
+  background-color: var(--card-bg);
   width: 960px;
   height: 540px;
   position: relative;
@@ -37,8 +116,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 12px solid #D32F2F;
-  /* Festive Red Border */
+  border: 12px solid var(--text-red);
+  box-sizing: border-box;
 }
 
 .card-content {
@@ -46,7 +125,6 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  /* Adjust spacing to fit 16:9 height */
   gap: 1rem;
   padding: 2rem;
   box-sizing: border-box;
@@ -54,7 +132,6 @@ body {
 
 .greeting-text {
   font-size: 1.8rem;
-  /* Reduced from 2.5rem */
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
@@ -72,27 +149,36 @@ body {
 
 .image-wrapper {
   width: 100%;
-  /* Restrict image height to fit in 16:9 container with text */
   max-height: 280px;
-  /* Reduced from 350px */
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
-.main-image {
+.placeholder-text {
+  text-align: center;
+  color: #999;
+}
+
+.preview-img {
+  max-height: 240px;
+  opacity: 0.3;
+  filter: grayscale(1);
+  margin-bottom: 0.5rem;
+}
+
+canvas {
   max-width: 100%;
   max-height: 280px;
-  /* Ensure it doesn't overflow */
-  width: auto;
   height: auto;
-  display: block;
-  mix-blend-mode: multiply;
   border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .signature-text {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #333;
   font-weight: 400;
   margin-top: 0.5rem;
@@ -119,68 +205,69 @@ body {
   display: block;
 }
 
-/* Download Button Styles */
 .download-btn {
   margin-top: 2rem;
-  padding: 1rem 2rem;
-  font-family: 'Montserrat', sans-serif;
+  padding: 1.2rem 3rem;
+  font-family: inherit;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
   background-color: var(--text-green);
   border: none;
   border-radius: 50px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.3);
+  transition: all 0.2s;
+  box-shadow: 0 8px 16px rgba(46, 139, 87, 0.2);
 }
 
 .download-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(46, 139, 87, 0.4);
-  background-color: #277549;
+  box-shadow: 0 12px 20px rgba(46, 139, 87, 0.3);
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 1000px) {
+
+  .generator-controls,
   .card-container {
     width: 100%;
-    max-width: 960px;
+  }
+
+  .card-container {
     height: auto;
-    /* Allow height to grow on smaller screens if aspect ratio breaks */
     aspect-ratio: 16/9;
-    /* Try to maintain aspect ratio */
   }
 }
 
 @media (max-width: 768px) {
-  .card-container {
-    /* On strict mobile, we might need to abandon fixed 16:9 if content overflows, 
-           but let's try to keep it scalable first. */
+  .controls-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .generate-btn {
     width: 100%;
+  }
+
+  .card-container {
     height: auto;
     aspect-ratio: auto;
-    /* Reset aspect ratio for portrait phones to avoid tiny text */
     padding: 2rem 1rem;
     border-width: 8px;
-    /* Slightly thinner border on mobile */
   }
 
   .greeting-text {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
   }
 
-  .main-image {
-    max-height: 250px;
+  canvas {
+    max-height: 200px;
   }
 
   .original-photo {
     width: 60px;
     bottom: 10px;
     right: 10px;
-  }
-
-  .signature-text {
-    font-size: 1rem;
   }
 }
