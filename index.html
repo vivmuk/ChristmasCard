@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venice AI - Retro Holiday Card Creator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-animation"></div>
+  
+  <header>
+    <div class="container">
+      <div class="logo">VENICE AI <span style="font-weight: 300; font-size: 0.8em;">// HOLIDAY</span></div>
+    </div>
+  </header>
+  
+  <main class="container">
+    <div class="glass-card">
+      <div class="grid-2050-hero">
+        <div class="controls-section">
+            <h1>
+                Create Your <br>
+                <span class="gradient-text">Retro Holiday Card</span>
+            </h1>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-5);">
+                Transform yourself into a 1950s Atomic Age masterpiece using Venice AI.
+            </p>
+
+            <div class="input-group flex-column">
+                <label class="label-text">1. Venice API Key</label>
+                <input type="password" id="apiKeyInput" class="neural-input" placeholder="sk-..." />
+            </div>
+
+            <div class="input-group flex-column">
+                <label class="label-text">2. Upload Your Photo</label>
+                <input type="file" id="imageInput" class="neural-input" accept="image/*" />
+            </div>
+
+            <div class="status-bar">
+                <span class="quantum-badge" id="statusBadge">Ready</span>
+                <button class="holo-button" onclick="createCard()">
+                    Create Magic
+                </button>
+            </div>
+            
+            <div id="logs" class="logs-area"></div>
+        </div>
+
+        <div class="preview-section flex-center">
+            <div class="canvas-container">
+                <canvas id="cardCanvas"></canvas>
+                <div class="placeholder-text flex-center">
+                    <span>Result will appear here</span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
